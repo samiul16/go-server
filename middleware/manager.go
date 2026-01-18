@@ -41,3 +41,18 @@ func (mngr *Manager) With(next http.Handler, middlewares ...Middleware) http.Han
 
 		return n
 }
+
+func (mngr *Manager) WrapMux(middlewares []Middleware, next http.Handler) http.Handler{
+		n := next
+
+		// [logger, Preflight,  Cors]
+		//logger(handler.test)
+		// Preflight(logger(handler.test))
+		// Cors(Preflight(logger(handler.test)))
+
+		for _, middleware := range middlewares {
+			n = middleware(n)
+		}
+
+		return n
+}
