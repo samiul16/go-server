@@ -2,12 +2,14 @@ package cmd
 
 import (
 	"fmt"
+	"go-server/config"
 	"go-server/middleware"
 	"net/http"
+	"strconv"
 )
 
 func Server() {
-	fmt.Println("Server starting")
+	configs := config.GetConfig()
 	manager := middleware.NewManger()
 
 	mux := http.NewServeMux()
@@ -20,7 +22,9 @@ func Server() {
 
 	initRoutes(mux, manager)
 
-	err := http.ListenAndServe(":8080", WrapedMux)
+	port := ":" + strconv.Itoa(configs.HttpPort)
+
+	err := http.ListenAndServe(port, WrapedMux)
 
 	if err != nil {
 		fmt.Println("Error on starting server", err)
