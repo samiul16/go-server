@@ -12,3 +12,19 @@ func SendProducts(w http.ResponseWriter, products []database.Product) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
+
+func SendProduct(w http.ResponseWriter, product database.Product) {
+	err := json.NewEncoder(w).Encode(product)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+
+func sendData(w http.ResponseWriter, data interface{} ) {
+ err := json.NewEncoder(w).Encode(data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
