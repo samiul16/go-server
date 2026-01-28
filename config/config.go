@@ -12,6 +12,7 @@ type Config struct {
 	Version     string
 	ServiceName string
 	HttpPort    int
+	Jwt_Secret string
 }
 
 var configurations Config
@@ -32,11 +33,13 @@ func loadConfig() {
 
 	version := os.Getenv("Version")
 	serviceName := os.Getenv("ServiceName")
+	jwtSecret := os.Getenv("Jwt_Secret")
 
 	configurations = Config{
 		Version: version,
 		HttpPort: int(port),
 		ServiceName: serviceName,
+		Jwt_Secret: jwtSecret,
 	}
 
 }

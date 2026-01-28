@@ -22,7 +22,7 @@ func SendProduct(w http.ResponseWriter, product database.Product) {
 }
 
 
-func sendData(w http.ResponseWriter, data interface{} ) {
+func SendData(w http.ResponseWriter, data interface{} ) {
  err := json.NewEncoder(w).Encode(data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
