@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func Authenticate(next http.Handler) http.Handler {
+func (m *Middlewares) Authenticate(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, request *http.Request) {
 fmt.Println("checking request header", request.Header.Get("Authorization"))
 
@@ -33,7 +33,7 @@ fmt.Println("checking request header", request.Header.Get("Authorization"))
 	requestSignature := tokenParts[2]
 	fmt.Println("signature", requestSignature)
 
-	byteArrSecret := []byte("my-secret")
+	byteArrSecret := []byte(m.configs.Jwt_Secret)
 	byteArrMessage := []byte(message)
 
 	h := hmac.New(sha256.New, byteArrSecret)
