@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
-	"strings"
+	"strings"   
 )
 
 func (m *Middlewares) Authenticate(next http.Handler) http.Handler {
