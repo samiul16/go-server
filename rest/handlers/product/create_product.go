@@ -3,14 +3,20 @@ package product
 import (
 	"encoding/json"
 	"fmt"
-	"go-server/database"
+	"go-server/repo"
 	"go-server/utils"
 	"net/http"
 )
 
+type ReqProduct struct {
+	ID    int     `json:"id"`
+	Title  string  `json:"name"`
+	Price float64 `json:"price"`
+}
+
 func (h *Handler) CreateProducts(w http.ResponseWriter, request *http.Request) {
 
-	var newProduct database.Product
+	var newProduct ReqProduct
 	decoder := json.NewDecoder(request.Body)
 	err := decoder.Decode(&newProduct)
 	if err != nil {
@@ -19,7 +25,17 @@ func (h *Handler) CreateProducts(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	database.Store(newProduct)
-	utils.SendProducts(w, database.List())
+	createdProduct, err := h.porductRepo.Create(repo.Product{
+		ID: 1,
+		Title: newProduct.Title,
+		Price: newProduct.Price,
+	})
+
+	if err != nil {
+		http.Error(w, "Could not create Product", http.StatusBadRequest)
+	}
+
+	
+	utils.SendProducts(w, createdProduct)
 
 }

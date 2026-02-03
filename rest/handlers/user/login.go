@@ -3,7 +3,6 @@ package user
 import (
 	"encoding/json"
 	"fmt"
-	"go-server/database"
 	"go-server/utils"
 	"net/http"
 )
@@ -26,15 +25,15 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 
-	usr := database.Find(reqLogin.Email, reqLogin.Password)
-	if usr == nil {
+	usr, err := h.userRepo.Find(reqLogin.Email)
+	if err != nil {
 		http.Error(w, "Invalid Credential", http.StatusBadRequest)
 		return
 	}
 
 	jwt, err := utils.CreateJwt("my-screate", utils.Payload{
-		Email: reqLogin.Email,
-		Sub:   reqLogin.Password,
+		Email: usr.Email,
+		Sub:   usr.Password,
 	})
 
 	if err != nil {

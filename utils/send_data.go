@@ -2,11 +2,11 @@ package utils
 
 import (
 	"encoding/json"
-	"go-server/database"
+	"go-server/repo"
 	"net/http"
 )
 
-func SendProducts(w http.ResponseWriter, products []database.Product) {
+func SendProducts(w http.ResponseWriter, products interface{}) {
 	err := json.NewEncoder(w).Encode(products)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -14,7 +14,7 @@ func SendProducts(w http.ResponseWriter, products []database.Product) {
 }
 
 
-func SendProduct(w http.ResponseWriter, product database.Product) {
+func SendProduct(w http.ResponseWriter, product repo.Product) {
 	err := json.NewEncoder(w).Encode(product)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

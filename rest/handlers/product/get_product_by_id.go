@@ -2,7 +2,6 @@ package product
 
 import (
 	"fmt"
-	"go-server/database"
 	"go-server/utils"
 	"net/http"
 	"strconv"
@@ -17,7 +16,7 @@ func (h *Handler) GetProductById(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("wrong product id")
 	}
 
-	product := database.Get(pId)
+	product, err := h.porductRepo.Get(pId)
 
 	utils.SendProduct(w, *product)
 
