@@ -15,7 +15,7 @@ import (
 func Server() {
 	configs := config.GetConfig()
 
-	db, err := db.NewConnection()
+	db, err := db.NewConnection(configs.DBConfig)
 
 	if err != nil {
 		fmt.Println("Error in db connection", err)
