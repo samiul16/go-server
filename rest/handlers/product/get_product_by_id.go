@@ -16,7 +16,7 @@ func (h *Handler) GetProductById(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("wrong product id")
 	}
 
-	product, err := h.porductRepo.Get(pId)
+	product, err := h.svc.Find(pId)
 
 	utils.SendProduct(w, *product)
 

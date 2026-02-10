@@ -3,7 +3,7 @@ package user
 import (
 	"encoding/json"
 	"fmt"
-	"go-server/repo"
+	"go-server/domain"
 	"go-server/utils"
 	"net/http"
 )
@@ -28,7 +28,7 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request)  {
 
 	fmt.Println("New User",newUser)
 
-	createdUser, err := h.userRepo.Create(repo.User{
+	createdUser, err := h.svc.Create(&domain.User{
 		FirstName: newUser.FirstName,
 		LastName: newUser.LastName,
 		Email: newUser.Email,

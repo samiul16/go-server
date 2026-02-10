@@ -3,31 +3,21 @@ package repo
 import (
 	"database/sql"
 	"fmt"
+	"go-server/domain"
+	"go-server/product"
 
 	"github.com/jmoiron/sqlx"
 )
 
-type Product struct {
-	ID    int     `json:"id" db:"id"`
-	Title  string  `json:"title" db:"title"`
-	Description string `json:"description" db:"description"`
-	Price float64 `json:"price" db:"price"`
-	ImgUrl string `json:"img_url" json:"img_url"`
-}
-
 type ProductRepo interface {
-	Create(p Product) (*Product, error)
-	Get(productID int) (*Product, error)
-	List() ([]*Product, error)
-	Delete(productId int) error
-	Update(p Product) (*Product, error)
+	product.ProductRepo
 }
 
 type productRepo struct {
 	db *sqlx.DB
 }
 
-func (r *productRepo) Create(p Product) (*Product, error) {
+func (r *productRepo) Create(p *domain.Product) (*domain.Product, error) {
   query := `
    INSERT INTO products(
     title,
@@ -51,15 +41,15 @@ func (r *productRepo) Create(p Product) (*Product, error) {
 	fmt.Println("Some thing wrong on scanning row after insert")
   }
 
-  return &p, nil
+  return p, nil
 
 }
-func (r *productRepo) Get(id int) (*Product, error) {
+func (r *productRepo) Get(id int) (*domain.Product, error) {
 	query := `
 	SELECT * from products
 	WHERE id = $1`
 
-	product := Product{}
+	product := domain.Product{}
 
 	err := r.db.Get(&product, query, id)
 
@@ -72,10 +62,10 @@ func (r *productRepo) Get(id int) (*Product, error) {
 	return &product,nil
 }
 
-func (r *productRepo) List() ([]*Product, error) {
+func (r *productRepo) List() ([]*domain.Product, error) {
 	query := `SELECT * from products`
 
-	var prdList []*Product
+	var prdList []*domain.Product
 
 	err := r.db.Select(&prdList, query)
 
@@ -96,7 +86,7 @@ func (r *productRepo) Delete(productId int) error {
 	return nil
 }
 
-func (r *productRepo) Update(product Product) (*Product, error) {
+func (r *productRepo) Update(product *domain.Product) (*domain.Product, error) {
 	query := `
 		UPDATE products
 		SET title = ?, price = ?, description = ?
@@ -115,7 +105,25 @@ func (r *productRepo) Update(product Product) (*Product, error) {
 		return nil, err
 	}
 
-	return &product, nil
+	return product, nil
+}
+
+func (r *productRepo) Find(productId int) (*domain.Product, error) {
+	query := `
+	SELECT * from products
+	WHERE id = $1`
+
+	product := domain.Product{}
+
+	err := r.db.Get(&product, query, productId)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil,nil
+		}
+	}
+
+	return &product,nil
 }
 
 

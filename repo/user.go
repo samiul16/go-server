@@ -2,36 +2,22 @@ package repo
 
 import (
 	"fmt"
-	"time"
+	"go-server/domain"
+	"go-server/user"
 
 	"github.com/jmoiron/sqlx"
 )
 
-type User struct {
-	ID          int       `db:"id" json:"id"`
-	FirstName   string    `db:"first_name" json:"first_name"`
-	LastName    string    `db:"last_name" json:"last_name"`
-	Email       string    `db:"email" json:"email"`
-	Password    string    `db:"password" json:"password"`
-	IsShopOwner bool      `db:"is_shop_owner" json:"is_shop_owner"`
-	CreatedAt   time.Time `db:"created_at" json:"created_at"`
-	UpdatedAt   time.Time `db:"updated_at" json:"updated_at"`
-}
-
 
 type UserRepo interface {
-	Create(user User) (*User, error)
-	Find(eamil string) (*User, error)
-	// List() ([]*User, error)
-	// Delete(userId int) error
-	// Update(user User) (*User, error)
+	user.UserRepo
 }
 
 type userRepo struct {
 	db *sqlx.DB
 }
 
-func (r *userRepo) Create(user User) (*User, error) {
+func (r *userRepo) Create(user *domain.User) (*domain.User, error) {
 	query := `
 		INSERT INTO users (
 			first_name,
@@ -63,10 +49,10 @@ func (r *userRepo) Create(user User) (*User, error) {
 
 	user.ID= userID
 
-	return &user, nil
+	return user, nil
 }
-func (r *userRepo) Find(email string) (*User, error) {
-	var user User
+func (r *userRepo) Find(email string) (*domain.User, error) {
+	var user domain.User
 
 	query := `
 		SELECT
@@ -121,3 +107,4 @@ func NewUserRepo(db *sqlx.DB) UserRepo {
 		db: db,
 	}
 }
+

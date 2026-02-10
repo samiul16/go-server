@@ -6,9 +6,10 @@ import (
 	"go-server/infra/db"
 	"go-server/repo"
 	"go-server/rest"
-	"go-server/rest/handlers/product"
-	"go-server/rest/handlers/user"
+	productHandler "go-server/rest/handlers/product"
+	userHandler "go-server/rest/handlers/user"
 	"go-server/rest/middleware"
+	"go-server/user"
 	"os"
 )
 
@@ -27,8 +28,10 @@ func Server() {
    productRepo := repo.NewProductRepo(db)
    userRepo := repo.NewUserRepo(db)
 
-	productHandler := product.NewHandler(middlewares, productRepo)
-	userHandler := user.NewHandler(middlewares, userRepo)
+   userService := user.NewUserService(userRepo)
+
+	productHandler := productHandler.NewHandler(middlewares, productRepo)
+	userHandler := userHandler.NewHandler(middlewares, userService)
 	
 	server := rest.NewServer(configs, productHandler, userHandler)
 

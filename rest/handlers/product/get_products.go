@@ -3,13 +3,13 @@ package product
 import (
 	"encoding/json"
 	"fmt"
-	"go-server/repo"
+	"go-server/domain"
 	"log"
 	"net/http"
 )
 
 // sendProducts serializes the list of products into a JSON response.
-func sendProducts(w http.ResponseWriter, products []*repo.Product) {
+func sendProducts(w http.ResponseWriter, products []*domain.Product) {
 	// Set the Content-Type header to inform the client that the response body is JSON
 	w.Header().Set("Content-Type", "application/json")
 
@@ -25,7 +25,7 @@ func sendProducts(w http.ResponseWriter, products []*repo.Product) {
 // getProducts handles the GET /products request.
 func  (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request) {
 	// 1. Fetch/define the data (in a real app, this comes from a database)
-	 products, error := h.porductRepo.List()
+	 products, error := h.svc.List()
 
 	 if error != nil {
 		fmt.Println("Error occured on getting products")

@@ -3,7 +3,7 @@ package product
 import (
 	"encoding/json"
 	"fmt"
-	"go-server/repo"
+	"go-server/domain"
 	"go-server/utils"
 	"net/http"
 )
@@ -25,7 +25,7 @@ func (h *Handler) CreateProducts(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	createdProduct, err := h.porductRepo.Create(repo.Product{
+	createdProduct, err := h.svc.Create(&domain.Product{
 		ID: 1,
 		Title: newProduct.Title,
 		Price: newProduct.Price,

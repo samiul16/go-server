@@ -1,19 +1,18 @@
 package product
 
 import (
-	"go-server/repo"
 	"go-server/rest/middleware"
 )
 
 type Handler struct {
 	middlewares *middleware.Middlewares
-	porductRepo repo.ProductRepo
+	svc Service
 }
 
-func NewHandler(middlewares *middleware.Middlewares, porductRepo repo.ProductRepo) *Handler {
+func NewHandler(middlewares *middleware.Middlewares, svc Service) *Handler {
 
 	return &Handler{
 		middlewares: middlewares,
-		porductRepo: porductRepo,
+		svc: svc,
 	}
 }
