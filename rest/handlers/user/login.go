@@ -31,7 +31,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	jwt, err := utils.CreateJwt("my-screate", utils.Payload{
+	jwt, err := utils.CreateJwt("my-secrete", utils.Payload{
 		Email: usr.Email,
 		Sub:   usr.Password,
 	})

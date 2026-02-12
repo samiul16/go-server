@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
-	"strings"   
+	"strings"
 )
 
 func (m *Middlewares) Authenticate(next http.Handler) http.Handler {
@@ -41,6 +41,8 @@ fmt.Println("checking request header", request.Header.Get("Authorization"))
 
 	preparedSignature := h.Sum(nil)
 	preparedSignatureB64 := converToBase64(preparedSignature)
+
+	fmt.Println("preparedSignatureB64", preparedSignatureB64)
 
 	if preparedSignatureB64 != requestSignature {
 		http.Error(w, "Unauthorized", 401)

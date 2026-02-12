@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-server/config"
 	"go-server/infra/db"
+	"go-server/product"
 	"go-server/repo"
 	"go-server/rest"
 	productHandler "go-server/rest/handlers/product"
@@ -29,8 +30,9 @@ func Server() {
    userRepo := repo.NewUserRepo(db)
 
    userService := user.NewUserService(userRepo)
+	productService := product.NewService(productRepo)
 
-	productHandler := productHandler.NewHandler(middlewares, productRepo)
+	productHandler := productHandler.NewHandler(middlewares, productService)
 	userHandler := userHandler.NewHandler(middlewares, userService)
 	
 	server := rest.NewServer(configs, productHandler, userHandler)

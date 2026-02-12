@@ -7,7 +7,8 @@ type Service interface {
 	Find(id int) (*domain.Product, error)
 	Update(product *domain.Product) (*domain.Product, error)
 	Delete(productId int) error
-	List() ([]*domain.Product, error)
+	List(page int, limit int) ([]*domain.Product, error)
+	Count() (int, error)
 }
 
 type service struct {
@@ -36,8 +37,11 @@ func (s *service) Delete(productId int) error {
 	return s.productRepo.Delete(productId)
 }
 
+func (s *service) Count() (int, error) {
+	return s.productRepo.Count()
+}
 
-func (s *service) List() ([]*domain.Product, error) {
-	return s.productRepo.List()
+func (s *service) List(page int, limit int) ([]*domain.Product, error) {
+	return s.productRepo.List(page, limit)
 }
 
